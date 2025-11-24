@@ -1,7 +1,7 @@
 from querys import *
 from utils.menu_funcs import *
 from utils.io import *
-from config import connection
+from db.connection import connection
 
 
 
@@ -27,11 +27,13 @@ while True:
         case '2':
             create_an_intelligence_report(engine,agent)
         case '3':
-            delete_an_intelligence_report(engine)
+            report_id = input("enter report id:\n")
+            delete_an_intelligence_report(engine,report_id)
         case '4':
             search_reports_by_keywords(engine) 
         case '5':
-            search_reports_by_keywords(engine)
+            hostile_actor = input("enter hostile actor name:\n")
+            search_reports_by_hostile_actor(engine,hostile_actor)
         case '6':
             search_for_dangerous_hostile_actors(engine)
         case '7':
