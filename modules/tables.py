@@ -11,11 +11,12 @@ class Agent(SQLModel, table=True):
 class Terrorist(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(max_length=50)
-    rank: str = Field(max_length=10)
+    rank: int | None
 
 class Report(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     timestamp: datetime = Field(default_factory=datetime.now)
+    data: str
     agentId: int | None = Field(default=None, foreign_key="agent.id")
     
 class TableToReports(SQLModel, table=True):
