@@ -5,7 +5,7 @@ from datetime import datetime
 class Agent(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(max_length=50)
-    password: str = Field(max_length=8)
+    password: str = Field(max_length=8, unique=True)
     rank: str = Field(max_length=10)
 
 class Terrorist(SQLModel, table=True):
