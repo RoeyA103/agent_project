@@ -34,10 +34,12 @@ def run_SQL_queries_freely(engine: Engine):
     pass
 
 def create_an_intelligence_report(engine: Engine,  agent: Agent):
-    terrorists = input("type the all terrorists by ,")
-    data = input("type the report")
+    
+    terrorists = input("Type all terrorists separated by commas:\n")
+    data = input("type the report\n")
     report_id = create_new_report(engine, data, agent.id)
     create_new_terrorist(engine, terrorists, report_id)
+    print("A successful creation")
     
 def create_new_report(engine: Engine, data: str, agent_id: int):
     try: 
@@ -112,13 +114,15 @@ def search_reports_by_hostile_actor(engine: Engine, hostile_actor: str):
             print(report)
 
 def search_for_dangerous_hostile_actors(engine: Engine):
-    print(search_for_dangerous(engine, 5))
+    search_for_dangerous(engine, 5)
 
 def search_for_highly_dangerous_hostile_actors(engine: Engine):
-    print(search_for_dangerous(engine, 10))
+    search_for_dangerous(engine, 10)
     
 def search_for_dangerous(engine: Engine, num_rank: int):
     with Session(engine) as session:
         statement = select(Terrorist).where(Terrorist.rank >= num_rank)
-        return session.exec(statement).all()
+        result = session.exec(statement).all()
+        for i in result:
+            print(i)
 
