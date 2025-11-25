@@ -14,7 +14,7 @@ def create_new_agent(engine):
     agent_name = input("enter agent name:\n")
     agent_rank = input("enter agent rank:\n")
     agent_password = input("enter password rank:\n")
-    create_agent(agent_name, agent_rank, agent_password, engine)
+    return create_agent(agent_name, agent_rank, agent_password, engine)
 
 def agent_connection(engine):
     while True:
@@ -58,4 +58,4 @@ def log_out():
 
 def write_agent_as_connected(agent):
      with open(r"logged_agent/logged.txt",'w') as file:
-        file.write(agent.id)
+        file.write(str(agent.id))

@@ -5,7 +5,7 @@ from modules.tables import *
 
 def find_agent(engine: Engine, agent_id: int):
       with Session(engine) as session:
-        statement = select(Agent).where(agent_id.id == agent_id)
+        statement = select(Agent).where(Agent.id == agent_id)
         if agent := session.exec(statement).one():
             return agent
         else:
@@ -14,9 +14,13 @@ def find_agent(engine: Engine, agent_id: int):
 def create_agent(agent_name: str,agent_rank: str, password: str, engine: Engine):
     try: 
         with Session(engine) as session:
-            session.add(Agent(name=agent_name, password=password, agent_rank=agent_rank))
+            agent = Agent(name=agent_name, password=password, rank=agent_rank)
+            session.add(agent)
+            session.flush()
+            session.expunge(agent)
             session.commit()
-        return "You have successfully registered"
+            print("A successful creation")
+            return agent
     except ValueError as e:
         return e
 
@@ -27,10 +31,12 @@ def run_SQL_queries_freely(engine: Engine):
     pass
 
 def create_an_intelligence_report(engine: Engine,  agent: Agent):
-    terrorists = input("type the all terrorists by ,")
-    data = input("type the report")
+    
+    terrorists = input("Type all terrorists separated by commas:\n")
+    data = input("type the report\n")
     report_id = create_new_report(engine, data, agent.id)
     create_new_terrorist(engine, terrorists, report_id)
+    print("A successful creation")
     
 def create_new_report(engine: Engine, data: str, agent_id: int):
     try: 
@@ -89,23 +95,29 @@ def delete_an_intelligence_report(engine: Engine, report_id: int):
 
 def search_reports_by_keywords(engine: Engine, keywords: str):
     with Session(engine) as session:
-        statement = select(Report).where(Report.data.like == f"%{keywords}%" )
-        return session.exec(statement).all()
+        statement = select(Report).where(Report.data.like(f"%{keywords}%"))
+        print(session.exec(statement).all())
 
 def search_reports_by_hostile_actor(engine: Engine,hostile_actor: str):
     with Session(engine) as session:
-        statement = select(ReportHostileActor , Terrorist).join(Terrorist).where(Terrorist.name.like == f"%{hostile_actor}%")
+        statement = (select(Report)
+        .join(ReportHostileActor, ReportHostileActor.reportId == Report.id)
+        .join(Terrorist, ReportHostileActor.terroristId == Terrorist.id)     
+        .where(Terrorist.name.like(f"%{hostile_actor}%"))
+        )
         reports = session.exec(statement).all()
         print(reports)
 
 def search_for_dangerous_hostile_actors(engine: Engine):
-    print(search_for_dangerous(engine, 5))
+    search_for_dangerous(engine, 5)
 
 def search_for_highly_dangerous_hostile_actors(engine: Engine):
-    print(search_for_dangerous(engine, 10))
+    search_for_dangerous(engine, 10)
     
 def search_for_dangerous(engine: Engine, num_rank: int):
     with Session(engine) as session:
         statement = select(Terrorist).where(Terrorist.rank >= num_rank)
-        return session.exec(statement).all()
+        result = session.exec(statement).all()
+        for i in result:
+            print(i)
 
