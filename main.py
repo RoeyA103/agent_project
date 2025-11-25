@@ -12,6 +12,8 @@ admin_password = '123'
 while True:
     engine = get_engine()
 
+    create_tables(engine)
+
     agent = connect(engine)
 
     write_agent_as_connected(agent)
@@ -31,7 +33,8 @@ while True:
             report_id = input("enter report id:\n")
             delete_an_intelligence_report(engine,report_id)
         case '4':
-            search_reports_by_keywords(engine) 
+            keywords = input("enter keywords:\n")
+            search_reports_by_keywords(engine,keywords)
         case '5':
             hostile_actor = input("enter hostile actor name:\n")
             search_reports_by_hostile_actor(engine,hostile_actor)
