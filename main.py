@@ -29,11 +29,12 @@ while True:
             create_an_intelligence_report(engine, agent)
         case "3":
             report_id = input("enter report id:\n")
-            delete_an_intelligence_report(engine, report_id)
-        case "4":
-            keywords = input("type keywords\n")
-            search_reports_by_keywords(engine, keywords)
-        case "5":
+
+            delete_an_intelligence_report(engine,report_id)
+        case '4':
+            keywords = input("enter keywords:\n")
+            search_reports_by_keywords(engine,keywords)
+        case '5':
             hostile_actor = input("enter hostile actor name:\n")
             search_reports_by_hostile_actor(engine, hostile_actor)
         case "6":

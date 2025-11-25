@@ -13,17 +13,17 @@ def check_connected_agent() -> int | None:
 def create_new_agent(engine):
     agent_name = input("enter agent name:\n")
     agent_rank = input("enter agent rank:\n")
-    agent_password = input("enter password rank:\n")
+    agent_password = input("enter password:\n")
     return create_agent(agent_name, agent_rank, agent_password, engine)
 
 def agent_connection(engine):
     while True:
-        agent_name = input("enter agent name:\n").strip().lower()
+        agent_id = input("enter agent id:\n").strip().lower()
         agent_password = input("enter password:\n")
 
-        if agent := find_agent(engine,agent_name):
+        if agent := find_agent(engine,int(agent_id)):
             if agent.password == agent_password:
-                return agent.id
+                return agent
             else:
                 print("incorrect password")
                 continue

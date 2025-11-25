@@ -19,8 +19,8 @@ def create_agent(agent_name: str,agent_rank: str, password: str, engine: Engine)
             session.flush()
             session.expunge(agent)
             session.commit()
-            print("A successful creation")
-            return agent
+        print("You have successfully registered")
+        return agent
     except ValueError as e:
         return e
 
@@ -98,15 +98,17 @@ def search_reports_by_keywords(engine: Engine, keywords: str):
         statement = select(Report).where(Report.data.like(f"%{keywords}%"))
         print(session.exec(statement).all())
 
-def search_reports_by_hostile_actor(engine: Engine,hostile_actor: str):
+def search_reports_by_hostile_actor(engine: Engine, hostile_actor: str):
     with Session(engine) as session:
-        statement = (select(Report)
-        .join(ReportHostileActor, ReportHostileActor.reportId == Report.id)
-        .join(Terrorist, ReportHostileActor.terroristId == Terrorist.id)     
-        .where(Terrorist.name.like(f"%{hostile_actor}%"))
+        statement = (
+            select(Report)
+            .join(ReportHostileActor, ReportHostileActor.reportId == Report.id)
+            .join(Terrorist, ReportHostileActor.terroristId == Terrorist.id)
+            .where(Terrorist.name.like(f"%{hostile_actor}%"))
         )
         reports = session.exec(statement).all()
-        print(reports)
+        for report in reports:
+            print(report)
 
 def search_for_dangerous_hostile_actors(engine: Engine):
     search_for_dangerous(engine, 5)
