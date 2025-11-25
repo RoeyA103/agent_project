@@ -1,7 +1,7 @@
 from queries import *
 from utils.menu_funcs import *
 from utils.io import *
-from db.connection import connection
+from db.connection import get_engine
 
 
 
@@ -10,7 +10,7 @@ admin_password = '123'
 
 
 while True:
-    engine = connection.get_engine()
+    engine = get_engine()
 
     agent = connect(engine)
 

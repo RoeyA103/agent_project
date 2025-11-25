@@ -14,7 +14,7 @@ def find_agent(engine: Engine, agent_id: int):
 def create_agent(agent_name: str,agent_rank: str, password: str, engine: Engine):
     try: 
         with Session(engine) as session:
-            session.add(Agent(agent_name, password, agent_rank))
+            session.add(Agent(name=agent_name, password=password, agent_rank=agent_rank))
             session.commit()
         return "You have successfully registered"
     except ValueError as e:
@@ -35,7 +35,7 @@ def create_an_intelligence_report(engine: Engine,  agent: Agent):
 def create_new_report(engine: Engine, data: str, agent_id: int):
     try: 
         with Session(engine) as session:
-            report = Report(data, agent_id)
+            report = Report(data=data, agentId=agent_id)
             session.add(report)
             session.flush()
             report_id = report.id
@@ -72,7 +72,7 @@ def create_new_terrorist(engine: Engine, terrorists: str, report_id: int):
 
 def create_new_ReportHostileActor(session: Session, terrorists_id: int, report_id: int):
     try: 
-        session.add(ReportHostileActor(report_id, terrorists_id))
+        session.add(ReportHostileActor(reportId= report_id, terroristId= terrorists_id))
         session.flush()
         return "You have create report"
     except ValueError as e:
