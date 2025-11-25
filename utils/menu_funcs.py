@@ -1,4 +1,5 @@
-from quereis import create_agent, 
+from quereis import *
+from utils.io import *
 
 def check_connected_agent() -> int | None:
     with open(r"logged_agent/logged.txt",'r+') as file:
@@ -15,9 +16,7 @@ def create_new_agent(engine):
     agent_password = input("enter password rank:\n")
     create_agent(agent_name, agent_rank, agent_password, engine)
 
-
-
-def agent_connection():
+def agent_connection(engine):
     while True:
         agent_name = input("enter agent name:\n").strip().lower()
         agent_password = input("enter password:\n")
