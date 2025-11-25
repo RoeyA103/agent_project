@@ -36,7 +36,7 @@ def run_SQL_queries_freely(engine: Engine):
 def create_an_intelligence_report(engine: Engine,  agent: Agent):
     
     terrorists = enter_terrorist()
-    data = input("type the report\n")
+    data = in_data_report()
     report_id = create_new_report(engine, data, agent.id)
     create_new_terrorist(engine, terrorists, report_id)
     print("A successful creation")

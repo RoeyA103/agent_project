@@ -37,3 +37,6 @@ def in_search_hostile_by_actor():
 
 def enter_terrorist():
     return input("Type all terrorists separated by commas:\n")
+
+def in_data_report():
+    return input("type the report\n")
