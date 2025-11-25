@@ -3,8 +3,8 @@ from sqlmodel import Session, select
 from modules.tables import *
 
 
-def find_agent(engine,agent_id):
-      with Session as session:
+def find_agent(engine: Engine, agent_id: int):
+      with Session(engine) as session:
         statement = select(Agent).where(agent_id.id == agent_id)
         if agent := session.exec(statement).one():
             return agent
@@ -27,34 +27,53 @@ def run_SQL_queries_freely(engine: Engine):
     pass
 
 def create_an_intelligence_report(engine: Engine,  agent: Agent):
-    try: 
-        terrorists = input("type the all terrorists by ,")
-        data = input("type the report")
-        with Session(engine) as session:
-            session.add(Report(data, agent.id))
-            session.commit()
-        create_new_terrorist(engine, terrorists)
-        return "You have create report"
-    except ValueError as e:
-        return e
+    terrorists = input("type the all terrorists by ,")
+    data = input("type the report")
+    report_id = create_new_report(engine, data, agent.id)
+    create_new_terrorist(engine, terrorists, report_id)
     
-def create_new_terrorist(engine: Engine, terrorists: str):
+def create_new_report(engine: Engine, data: str, agent_id: int):
     try: 
         with Session(engine) as session:
-            for t in terrorists.split(','):
-                statement = select(Terrorist).where(Terrorist.name == t)
-                if ter:= session.get(statement):
-                    ter.ra
-                session.commit()
-        return "You have successfully create terrorist"
+            report = Report(data, agent_id)
+            session.add(report)
+            session.flush()
+            report_id = report.id
+            session.commit()
+        return report_id
     except ValueError as e:
         return e
 
-def create_new_ReportHostileActor(engine: Engine, terrorists_id: id, report_id: int):
+def create_new_terrorist(engine: Engine, terrorists: str, report_id: int):
+    
+    names = [n.strip() for n in terrorists.split(",") if n.strip()]
+    
+    with Session(engine) as session:
+        statement = select(Terrorist).where(Terrorist.name.in_(names))
+        existing_terrorists = session.exec(statement).all()
+
+        terrorists_by_name = {t.name: t for t in existing_terrorists}
+
+        for name in names:
+            terrorist = terrorists_by_name.get(name)
+            
+            if terrorist:
+                terrorist.rank = (terrorist.rank or 0) + 1
+                t_id = terrorist.id
+            else:
+                terrorist = Terrorist(name=name, rank=1)
+                session.add(terrorist)
+                session.flush()
+                t_id = terrorist.id
+                
+            create_new_ReportHostileActor(session, t_id, report_id)
+
+        session.commit()
+
+def create_new_ReportHostileActor(session: Session, terrorists_id: int, report_id: int):
     try: 
-        with Session(engine) as session:
-            session.add(ReportHostileActor(report_id, terrorists_id))
-            session.commit()
+        session.add(ReportHostileActor(report_id, terrorists_id))
+        session.flush()
         return "You have create report"
     except ValueError as e:
         return e
