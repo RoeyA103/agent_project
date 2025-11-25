@@ -19,7 +19,7 @@ class Report(SQLModel, table=True):
     data: str
     agentId: int | None = Field(default=None, foreign_key="agent.id")
     
-class TableToReports(SQLModel, table=True):
+class ReportHostileActor(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     reportId: int | None = Field(default=None, foreign_key="report.id")
     terroristId: int | None = Field(default=None, foreign_key="terrorist.id")
