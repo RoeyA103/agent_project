@@ -25,4 +25,15 @@ exit                                 0
 
 def in_pass():
     return input("enter admin password:\n")
-    
+
+def in_report_id():
+    return int(input("enter report id:\n"))
+
+def in_search_keywords():
+    return input("enter keywords:\n")
+
+def in_search_hostile_by_actor():
+    return input("enter hostile actor name:\n")
+
+def enter_terrorist():
+    return input("Type all terrorists separated by commas:\n")

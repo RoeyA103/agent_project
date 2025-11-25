@@ -1,14 +1,17 @@
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, select
 from modules.tables import *
+from sqlalchemy.exc import NoResultFound
 
-
+from utils.io import *
 def find_agent(engine: Engine, agent_id: int):
-      with Session(engine) as session:
+    with Session(engine) as session:
         statement = select(Agent).where(Agent.id == agent_id)
-        if agent := session.exec(statement).one():
+        try:
+            agent = session.exec(statement).one()
             return agent
-        else:
+        except NoResultFound:
+            print(f"No agent found with id {agent_id}")
             return None
 
 def create_agent(agent_name: str,agent_rank: str, password: str, engine: Engine):
@@ -32,7 +35,7 @@ def run_SQL_queries_freely(engine: Engine):
 
 def create_an_intelligence_report(engine: Engine,  agent: Agent):
     
-    terrorists = input("Type all terrorists separated by commas:\n")
+    terrorists = enter_terrorist()
     data = input("type the report\n")
     report_id = create_new_report(engine, data, agent.id)
     create_new_terrorist(engine, terrorists, report_id)
@@ -85,9 +88,9 @@ def create_new_ReportHostileActor(session: Session, terrorists_id: int, report_i
         return e
     
 def delete_an_intelligence_report(engine: Engine, report_id: int):
-    with Session as session:
+    with Session(engine) as session:
         statement = select(Report).where(Report.id == report_id)
-        if report := session.exec(statement).one():
+        if report := session.exec(statement).first():
             session.delete(report)
             session.commit()
         else:
