@@ -20,7 +20,6 @@ while True:
 
     match agent_choice:
         case "1":
-            password = input("enter admin password:\n")
             if password == admin_password:
                 run_SQL_queries_freely(engine)
             else:
@@ -29,7 +28,7 @@ while True:
             create_an_intelligence_report(engine, agent)
         case "3":
             report_id = input("enter report id:\n")
-
+            report_id = int(report_id)
             delete_an_intelligence_report(engine,report_id)
         case '4':
             keywords = input("enter keywords:\n")

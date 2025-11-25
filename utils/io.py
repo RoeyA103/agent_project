@@ -21,3 +21,8 @@ log in                               2
 continue as the last connected agent 3
 exit                                 0
 """
+
+
+def in_pass():
+    return input("enter admin password:\n")
+    
