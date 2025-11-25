@@ -1,4 +1,4 @@
-from quereis import *
+from queries import *
 from utils.io import *
 
 def check_connected_agent() -> int | None:

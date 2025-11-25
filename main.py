@@ -1,4 +1,4 @@
-from quereis import *
+from queries import *
 from utils.menu_funcs import *
 from utils.io import *
 from db.connection import connection
