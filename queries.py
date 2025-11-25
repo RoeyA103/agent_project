@@ -1,14 +1,17 @@
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, select
 from modules.tables import *
+from sqlalchemy.exc import NoResultFound
 
 
 def find_agent(engine: Engine, agent_id: int):
-      with Session(engine) as session:
+    with Session(engine) as session:
         statement = select(Agent).where(Agent.id == agent_id)
-        if agent := session.exec(statement).one():
+        try:
+            agent = session.exec(statement).one()
             return agent
-        else:
+        except NoResultFound:
+            print(f"No agent found with id {agent_id}")
             return None
 
 def create_agent(agent_name: str,agent_rank: str, password: str, engine: Engine):

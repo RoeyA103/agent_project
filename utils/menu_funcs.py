@@ -1,6 +1,7 @@
 from queries import *
 from utils.io import *
 
+
 def check_connected_agent() -> int | None:
     with open(r"logged_agent/logged.txt",'r+') as file:
         content = file.read()
@@ -48,6 +49,8 @@ def connect(engine):
                 agent = get_connected_agent(engine)
                 if agent:
                     return agent
+            case '0':
+                return None    
             case _:
                 print("invalid input")    
             
