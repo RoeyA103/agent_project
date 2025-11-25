@@ -1,7 +1,7 @@
-from querys import *
+from quereis import *
 from utils.menu_funcs import *
 from utils.io import *
-from config import connection
+from db.connection import connection
 
 
 
