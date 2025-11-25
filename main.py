@@ -17,6 +17,7 @@ while True:
     write_agent_as_connected(agent)
 
     agent_choice = input(menu_message)
+    
     match agent_choice:
         case '1':
             password = input("enter admin password:\n")
