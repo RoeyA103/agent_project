@@ -86,9 +86,9 @@ def create_new_ReportHostileActor(session: Session, terrorists_id: int, report_i
         return e
     
 def delete_an_intelligence_report(engine: Engine, report_id: int):
-    with Session as session:
+    with Session(engine) as session:
         statement = select(Report).where(Report.id == report_id)
-        if report := session.exec(statement).one():
+        if report := session.exec(statement).first():
             session.delete(report)
             session.commit()
         else:
